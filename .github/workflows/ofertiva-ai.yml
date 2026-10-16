@@ -3,6 +3,8 @@ on:
   schedule:
     - cron: "5 12,18,0 * * *"
   workflow_dispatch:
+  push:
+    branches: [feat/ofertiva-ai]
   issues:
     types: [opened]
 permissions:
@@ -30,11 +32,11 @@ jobs:
         run: python -m unittest discover -s automation -p "test_*.py"
       - name: Descobrir, criar vídeo e distribuir
         env:
-          SHOPEE_APP_ID: \${{ secrets.SHOPEE_APP_ID }}
-          SHOPEE_APP_SECRET: \${{ secrets.SHOPEE_APP_SECRET }}
-          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
-          TELEGRAM_BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL: \${{ secrets.TELEGRAM_CHANNEL }}
+          SHOPEE_APP_ID: ${{ secrets.SHOPEE_APP_ID }}
+          SHOPEE_APP_SECRET: ${{ secrets.SHOPEE_APP_SECRET }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
         run: |
           if [ "$GITHUB_EVENT_NAME" = "issues" ]; then
             python automation/worker.py --issue
@@ -45,7 +47,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ofertiva-video-\${{ github.run_id }}
+          name: ofertiva-video-${{ github.run_id }}
           path: out/*.mp4
           if-no-files-found: ignore
           retention-days: 7
