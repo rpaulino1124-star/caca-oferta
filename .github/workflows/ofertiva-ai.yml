@@ -30,6 +30,12 @@ jobs:
           pip install -r automation/requirements.txt
       - name: Testes de regras e links
         run: python -m unittest discover -s automation -p "test_*.py"
+      - name: Compilar painel Next.js
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
       - name: Descobrir, criar vídeo e distribuir
         env:
           SHOPEE_APP_ID: ${{ secrets.SHOPEE_APP_ID }}
