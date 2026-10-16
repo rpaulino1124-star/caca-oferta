@@ -47,6 +47,7 @@ class TestOfertiva(unittest.TestCase):
                 video = make_video(p,"Texto de teste")
         self.assertTrue(video.exists())
         self.assertGreater(video.stat().st_size,2000)
+        video.unlink(missing_ok=True)
 
 if __name__ == "__main__":
     unittest.main()
