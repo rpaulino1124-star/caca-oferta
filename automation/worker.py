@@ -4,12 +4,10 @@
 Sem credenciais, não simula publicação nem comissão. Nenhuma operação na Shopee Vídeo.
 """
 import hashlib
-import ipaddress
 import json
 import os
 import re
 import shutil
-import socket
 import subprocess
 import sys
 import time
@@ -138,7 +136,7 @@ def issue_product():
         raise ValueError("Este modo requer um evento real de issue do GitHub")
     event = json.loads(Path(event_path).read_text(encoding="utf8"))
     body = (event.get("issue") or {}).get("body") or ""
-    match = re.search(r"\\x60{3}ofertiva\s*([\s\S]*?)\\x60{3}", body)
+    match = re.search(r"\x60{3}ofertiva\s*([\s\S]*?)\x60{3}", body)
     if not match:
         raise ValueError("Issue sem bloco JSON ofertiva")
     return validate_product(json.loads(match.group(1)))
